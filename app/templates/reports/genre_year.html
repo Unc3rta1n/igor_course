@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block heading %}Отчёт №2. Количество песен по жанрам за год{% endblock %}
+
+{% block content %}
+<form class="filters" method="get" action="/reports/genre-year">
+    <label>
+        <span>Год выпуска</span>
+        <input type="number" name="year" min="1900" max="{{ current_year }}" required
+               value="{{ year if year else '' }}">
+    </label>
+    <button type="submit">Построить отчёт</button>
+</form>
+
+{% if year %}
+    <table>
+        <thead>
+        <tr><th>Жанр</th><th class="num">Песен за {{ year }} год</th></tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <td>{{ row.genre_name }}</td>
+                <td class="num">{{ row.songs_count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p class="muted">Жанры, в которых за указанный год песен не выпускалось, показаны со значением 0.</p>
+{% else %}
+    <p class="empty">Укажите год, чтобы построить отчёт.</p>
+{% endif %}
+
+<details class="sql">
+    <summary>Текст SQL-запроса</summary>
+    <pre>{{ sql }}</pre>
+</details>
+{% endblock %}

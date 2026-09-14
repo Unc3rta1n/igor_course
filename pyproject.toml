@@ -1,0 +1,16 @@
+[project]
+name = "playlist-db"
+version = "1.0.0"
+description = "Курсовая работа №10: база данных «Плейлист» (PostgreSQL + FastAPI)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "asyncpg>=0.30",
+    "jinja2>=3.1",
+    "python-multipart>=0.0.12",
+    "python-dotenv>=1.0",
+]
+
+[tool.uv]
+package = false

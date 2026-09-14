@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block heading %}Отчёт №4. Исполнители, выпустившие альбом за период{% endblock %}
+
+{% block content %}
+<form class="filters" method="get" action="/reports/artists-period">
+    <label>
+        <span>Год начала периода</span>
+        <input type="number" name="year_from" min="1900" max="{{ current_year }}" required
+               value="{{ year_from if year_from else '' }}">
+    </label>
+    <label>
+        <span>Год окончания периода</span>
+        <input type="number" name="year_to" min="1900" max="{{ current_year }}" required
+               value="{{ year_to if year_to else '' }}">
+    </label>
+    <button type="submit">Построить отчёт</button>
+</form>
+
+{% if year_from and year_to %}
+    <table>
+        <thead>
+        <tr>
+            <th class="num">№</th>
+            <th>Исполнитель</th>
+            <th class="num">Год появления</th>
+            <th class="num">Альбомов за период</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <td class="num">{{ loop.index }}</td>
+                <td>{{ row.artist_name }}</td>
+                <td class="num">{{ row.debut_year }}</td>
+                <td class="num">{{ row.albums_count }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="4" class="empty">За период с {{ year_from }} по {{ year_to }} год альбомов не выпускалось</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p class="muted">Список отсортирован по алфавиту с учётом правил русского языка (ICU-сортировка).</p>
+{% else %}
+    <p class="empty">Задайте границы периода, чтобы построить отчёт.</p>
+{% endif %}
+
+<details class="sql">
+    <summary>Текст SQL-запроса</summary>
+    <pre>{{ sql }}</pre>
+</details>
+{% endblock %}

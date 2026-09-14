@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:18
+    container_name: playlist_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # ICU-локаль кластера даёт русскую сортировку
+      # (ORDER BY ... COLLATE "ru-RU-x-icu").
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=ru-RU --encoding=UTF8"
+      LANG: C.UTF-8
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      # Образ postgres:18+ ожидает монтирование каталога верхнего уровня:
+      # данные кластера попадают в его подкаталог с номером версии.
+      - pgdata:/var/lib/postgresql
+      # Postgres выполняет эти скрипты один раз при инициализации пустого
+      # тома, в лексикографическом порядке имён: сначала схема, затем данные.
+      # Суффикс z переразмечает каталог для SELinux (Fedora/RHEL).
+      - ./sql:/docker-entrypoint-initdb.d:ro,z
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

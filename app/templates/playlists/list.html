@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block heading %}Плейлисты{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn" href="/playlists/new">Создать плейлист</a></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Плейлист</th>
+        <th class="num">Дата создания</th>
+        <th class="num">Песен</th>
+        <th class="num">Средний рейтинг</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td><a href="/playlists/{{ row.playlist_id }}">{{ row.name }}</a></td>
+            <td class="num">{{ row.created_at.strftime('%d.%m.%Y') }}</td>
+            <td class="num">{{ row.songs_count }}</td>
+            <td class="num">{{ row.avg_rating if row.avg_rating is not none else 'нет' }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/playlists/{{ row.playlist_id }}">Состав</a>
+                <a class="btn btn-light" href="/playlists/{{ row.playlist_id }}/edit">Изменить</a>
+                <form method="post" action="/playlists/{{ row.playlist_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="empty">Плейлисты не созданы</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

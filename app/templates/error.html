@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Ошибка{% endblock %}
+{% block heading %}Операция не выполнена{% endblock %}
+
+{% block content %}
+<div class="error">
+    <p>{{ message }}</p>
+    <p><a class="btn btn-light" href="{{ back_url }}">Вернуться и исправить</a></p>
+</div>
+{% endblock %}

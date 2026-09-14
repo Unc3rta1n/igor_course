@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение альбома" if album else "Новый альбом" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/albums/' ~ album.album_id if album else '/albums' }}">
+    <label>
+        <span>Исполнитель</span>
+        <select name="artist_id" required>
+            {% for artist in artists %}
+                <option value="{{ artist.artist_id }}"
+                        {% if album and album.artist_id == artist.artist_id %}selected{% endif %}>
+                    {{ artist.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Название альбома</span>
+        <input type="text" name="title" maxlength="120" required
+               value="{{ album.title if album else '' }}">
+    </label>
+    <label>
+        <span>Год выпуска</span>
+        <input type="number" name="release_year" min="1900" max="2100" required
+               value="{{ album.release_year if album else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/albums">Отмена</a>
+</form>
+<p class="muted">Год выпуска не может быть раньше года появления исполнителя.</p>
+{% endblock %}

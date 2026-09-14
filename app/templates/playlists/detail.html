@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block heading %}Плейлист «{{ playlist.name }}»{% endblock %}
+
+{% block content %}
+<p class="muted">Создан {{ playlist.created_at.strftime('%d.%m.%Y') }}</p>
+
+<table>
+    <thead>
+    <tr>
+        <th class="num">№</th>
+        <th>Песня</th>
+        <th>Исполнитель</th>
+        <th>Жанр</th>
+        <th class="num">Рейтинг</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in content %}
+        <tr>
+            <td class="num">{{ row.position }}</td>
+            <td>{{ row.song_title }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td>{{ row.genre_name }}</td>
+            <td class="num">{{ row.rating }}</td>
+            <td class="actions">
+                <form method="post"
+                      action="/playlists/{{ playlist.playlist_id }}/songs/{{ row.song_id }}/delete">
+                    <button class="btn-danger" type="submit">Убрать</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="6" class="empty">Плейлист пуст</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Добавить песню</h2>
+<form class="filters" method="post" action="/playlists/{{ playlist.playlist_id }}/songs">
+    <label>
+        <span>Песня</span>
+        <select name="song_id" required>
+            {% for song in free_songs %}
+                <option value="{{ song.song_id }}">{{ song.artist_name }}: {{ song.title }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button type="submit">Добавить в конец</button>
+    <a class="btn btn-light" href="/playlists">К списку плейлистов</a>
+</form>
+{% endblock %}

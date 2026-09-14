@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение песни" if song else "Новая песня" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/songs/' ~ song.song_id if song else '/songs' }}">
+    <label>
+        <span>Исполнитель</span>
+        <select name="artist_id" required>
+            {% for artist in artists %}
+                <option value="{{ artist.artist_id }}"
+                        {% if song and song.artist_id == artist.artist_id %}selected{% endif %}>
+                    {{ artist.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Название песни</span>
+        <input type="text" name="title" maxlength="120" required
+               value="{{ song.title if song else '' }}">
+    </label>
+    <label>
+        <span>Альбом (необязательно)</span>
+        <select name="album_id">
+            <option value="">вне альбома</option>
+            {% for album in albums %}
+                <option value="{{ album.album_id }}"
+                        {% if song and song.album_id == album.album_id %}selected{% endif %}>
+                    {{ album.artist_name }}: {{ album.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Жанр</span>
+        <select name="genre_id" required>
+            {% for genre in genres %}
+                <option value="{{ genre.genre_id }}"
+                        {% if song and song.genre_id == genre.genre_id %}selected{% endif %}>
+                    {{ genre.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Год выпуска</span>
+        <input type="number" name="release_year" min="1900" max="2100" required
+               value="{{ song.release_year if song else '' }}">
+    </label>
+    <label>
+        <span>Рейтинг песни (от 1 до 10)</span>
+        <input type="number" name="rating" min="1" max="10" required
+               value="{{ song.rating if song else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/songs">Отмена</a>
+</form>
+<p class="muted">
+    Альбом должен принадлежать тому же исполнителю, что и песня.
+    Название песни должно быть уникальным в пределах одного исполнителя.
+</p>
+{% endblock %}

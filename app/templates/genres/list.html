@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block heading %}Жанры{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn" href="/genres/new">Добавить жанр</a></div>
+
+<table>
+    <thead>
+    <tr><th>Жанр</th><th class="num">Песен</th><th></th></tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td class="num">{{ row.songs_count }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/genres/{{ row.genre_id }}/edit">Изменить</a>
+                <form method="post" action="/genres/{{ row.genre_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="3" class="empty">Справочник пуст</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

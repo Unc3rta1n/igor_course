@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение награды" if award else "Новая награда" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/awards/' ~ award.award_id if award else '/awards' }}">
+    <label>
+        <span>Песня</span>
+        <select name="song_id" required>
+            {% for song in songs %}
+                <option value="{{ song.song_id }}"
+                        {% if award and award.song_id == song.song_id %}selected{% endif %}>
+                    {{ song.artist_name }}: {{ song.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Название награды</span>
+        <input type="text" name="title" maxlength="120" required
+               value="{{ award.title if award else '' }}">
+    </label>
+    <label>
+        <span>Год вручения</span>
+        <input type="number" name="year" min="1900" max="2100" required
+               value="{{ award.year if award else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/awards">Отмена</a>
+</form>
+{% endblock %}

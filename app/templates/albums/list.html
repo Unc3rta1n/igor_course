@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block heading %}Альбомы{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn" href="/albums/new">Добавить альбом</a></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Альбом</th>
+        <th>Исполнитель</th>
+        <th class="num">Год выпуска</th>
+        <th class="num">Песен</th>
+        <th class="num">Средний рейтинг</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.title }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td class="num">{{ row.release_year }}</td>
+            <td class="num">{{ row.songs_count }}</td>
+            <td class="num">{{ row.avg_rating if row.avg_rating is not none else 'нет' }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/albums/{{ row.album_id }}/edit">Изменить</a>
+                <form method="post" action="/albums/{{ row.album_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="6" class="empty">Альбомы не заведены</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="muted">При удалении альбома его песни сохраняются в базе и становятся песнями вне альбома.</p>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block heading %}Песни{% endblock %}
+
+{% block content %}
+<form class="filters" method="get" action="/songs">
+    <label>
+        <span>Исполнитель</span>
+        <select name="artist_id">
+            <option value="">все</option>
+            {% for artist in artists %}
+                <option value="{{ artist.artist_id }}"
+                        {% if filters.artist_id == artist.artist_id %}selected{% endif %}>
+                    {{ artist.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Жанр</span>
+        <select name="genre_id">
+            <option value="">все</option>
+            {% for genre in genres %}
+                <option value="{{ genre.genre_id }}"
+                        {% if filters.genre_id == genre.genre_id %}selected{% endif %}>
+                    {{ genre.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        <span>Год выпуска</span>
+        <input type="number" name="release_year" min="1900" max="2100"
+               value="{{ filters.release_year if filters.release_year else '' }}">
+    </label>
+    <button type="submit">Показать</button>
+    <a class="btn btn-light" href="/songs">Сбросить</a>
+</form>
+
+<div class="toolbar"><a class="btn" href="/songs/new">Добавить песню</a></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Песня</th>
+        <th>Исполнитель</th>
+        <th>Альбом</th>
+        <th>Жанр</th>
+        <th class="num">Год</th>
+        <th class="num">Рейтинг</th>
+        <th class="num">Наград</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.song_title }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td>{{ row.album_title if row.album_title else 'вне альбома' }}</td>
+            <td>{{ row.genre_name }}</td>
+            <td class="num">{{ row.release_year }}</td>
+            <td class="num">{{ row.rating }}</td>
+            <td class="num">{{ row.awards_count }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/songs/{{ row.song_id }}/edit">Изменить</a>
+                <form method="post" action="/songs/{{ row.song_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="8" class="empty">Песни не найдены</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="muted">Найдено записей: {{ rows | length }}. Пометка «вне альбома» означает, что песня не входит ни в один альбом.</p>
+{% endblock %}

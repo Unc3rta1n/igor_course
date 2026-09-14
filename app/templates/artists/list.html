@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block heading %}Исполнители{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn" href="/artists/new">Добавить исполнителя</a></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Исполнитель</th>
+        <th class="num">Год появления</th>
+        <th class="num">Песен</th>
+        <th class="num">Альбомов</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.name }}</td>
+            <td class="num">{{ row.debut_year }}</td>
+            <td class="num">{{ row.songs_count }}</td>
+            <td class="num">{{ row.albums_count }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/artists/{{ row.artist_id }}/edit">Изменить</a>
+                <form method="post" action="/artists/{{ row.artist_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="empty">Исполнители не заведены</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="muted">Удаление исполнителя каскадно удаляет его альбомы, песни и награды этих песен.</p>
+{% endblock %}

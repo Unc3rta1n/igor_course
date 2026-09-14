@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block heading %}Награды{% endblock %}
+
+{% block content %}
+<div class="toolbar"><a class="btn" href="/awards/new">Добавить награду</a></div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Награда</th>
+        <th class="num">Год</th>
+        <th>Песня</th>
+        <th>Исполнитель</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row.title }}</td>
+            <td class="num">{{ row.year }}</td>
+            <td>{{ row.song_title }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td class="actions">
+                <a class="btn btn-light" href="/awards/{{ row.award_id }}/edit">Изменить</a>
+                <form method="post" action="/awards/{{ row.award_id }}/delete">
+                    <button class="btn-danger" type="submit">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="empty">Награды не заведены</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+<p class="muted">Награда всегда принадлежит конкретной песне; у одной песни может быть несколько наград.</p>
+{% endblock %}

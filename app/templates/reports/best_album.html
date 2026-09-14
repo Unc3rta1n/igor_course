@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block heading %}Отчёт №3. Альбом с самыми популярными песнями{% endblock %}
+
+{% block content %}
+<form class="filters" method="get" action="/reports/best-album">
+    <label>
+        <span>Жанры (можно выбрать несколько: Ctrl или Shift)</span>
+        <select name="genre_ids" multiple required size="8">
+            {% for genre in genres %}
+                <option value="{{ genre.genre_id }}"
+                        {% if genre.genre_id in selected %}selected{% endif %}>
+                    {{ genre.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </label>
+    <button type="submit">Найти альбом</button>
+    <a class="btn btn-light" href="/reports/best-album">Сбросить</a>
+</form>
+
+{% if selected %}
+    <table>
+        <thead>
+        <tr>
+            <th>Альбом</th>
+            <th>Исполнитель</th>
+            <th class="num">Год выпуска</th>
+            <th class="num">Средний рейтинг</th>
+            <th class="num">Учтено песен</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+                <td>{{ row.album_title }}</td>
+                <td>{{ row.artist_name }}</td>
+                <td class="num">{{ row.release_year }}</td>
+                <td class="num">{{ row.avg_rating }}</td>
+                <td class="num">{{ row.songs_count }}</td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5" class="empty">В выбранных жанрах нет песен, входящих в альбомы</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <p class="muted">
+        Средний балл считается только по песням выбранных жанров.
+        Если наивысший средний балл у нескольких альбомов, выводятся все они.
+    </p>
+{% else %}
+    <p class="empty">Выберите хотя бы один жанр.</p>
+{% endif %}
+
+<details class="sql">
+    <summary>Текст SQL-запроса</summary>
+    <pre>{{ sql }}</pre>
+</details>
+{% endblock %}

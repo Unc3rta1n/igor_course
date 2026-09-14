@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение жанра" if genre else "Новый жанр" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/genres/' ~ genre.genre_id if genre else '/genres' }}">
+    <label>
+        <span>Название жанра</span>
+        <input type="text" name="name" maxlength="60" required
+               value="{{ genre.name if genre else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/genres">Отмена</a>
+</form>
+{% endblock %}

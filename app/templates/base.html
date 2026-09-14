@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}База данных «Плейлист»{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="/">♪ Плейлист</a>
+    <nav>
+        <a href="/songs">Песни</a>
+        <a href="/artists">Исполнители</a>
+        <a href="/albums">Альбомы</a>
+        <a href="/genres">Жанры</a>
+        <a href="/awards">Награды</a>
+        <a href="/playlists">Плейлисты</a>
+        <a class="accent" href="/reports">Отчёты</a>
+    </nav>
+</header>
+
+<main>
+    <h1>{% block heading %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

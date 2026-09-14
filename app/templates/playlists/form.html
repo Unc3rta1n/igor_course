@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение плейлиста" if playlist else "Новый плейлист" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/playlists/' ~ playlist.playlist_id if playlist else '/playlists' }}">
+    <label>
+        <span>Название плейлиста</span>
+        <input type="text" name="name" maxlength="120" required
+               value="{{ playlist.name if playlist else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/playlists">Отмена</a>
+</form>
+{% endblock %}

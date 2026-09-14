@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block heading %}База данных «Плейлист»{% endblock %}
+
+{% block content %}
+<div class="cards">
+    <div><strong>{{ stats.songs }}</strong><span>песен</span></div>
+    <div><strong>{{ stats.artists }}</strong><span>исполнителей</span></div>
+    <div><strong>{{ stats.albums }}</strong><span>альбомов</span></div>
+    <div><strong>{{ stats.genres }}</strong><span>жанров</span></div>
+    <div><strong>{{ stats.awards }}</strong><span>наград</span></div>
+    <div><strong>{{ stats.playlists }}</strong><span>плейлистов</span></div>
+</div>
+
+<h2>Самые высоко оценённые песни</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Песня</th><th>Исполнитель</th><th>Жанр</th><th class="num">Рейтинг</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in top_rated %}
+        <tr>
+            <td>{{ row.song_title }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td>{{ row.genre_name }}</td>
+            <td class="num">{{ row.rating }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

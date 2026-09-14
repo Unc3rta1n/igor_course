@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block heading %}{{ "Изменение исполнителя" if artist else "Новый исполнитель" }}{% endblock %}
+
+{% block content %}
+<form class="card" method="post"
+      action="{{ '/artists/' ~ artist.artist_id if artist else '/artists' }}">
+    <label>
+        <span>Имя исполнителя или название группы</span>
+        <input type="text" name="name" maxlength="120" required
+               value="{{ artist.name if artist else '' }}">
+    </label>
+    <label>
+        <span>Год появления исполнителя</span>
+        <input type="number" name="debut_year" min="1900" max="2100" required
+               value="{{ artist.debut_year if artist else '' }}">
+    </label>
+    <button type="submit">Сохранить</button>
+    <a class="btn btn-light" href="/artists">Отмена</a>
+</form>
+{% endblock %}

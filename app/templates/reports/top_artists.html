@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block heading %}Отчёт №1. Топ-10 исполнителей по количеству наград{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+    <tr>
+        <th class="num">Место</th>
+        <th>Исполнитель</th>
+        <th class="num">Наград</th>
+        <th class="num">Награждённых песен</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            <td class="num">{{ loop.index }}</td>
+            <td>{{ row.artist_name }}</td>
+            <td class="num">{{ row.awards_count }}</td>
+            <td class="num">{{ row.awarded_songs }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="4" class="empty">Награды в базе отсутствуют</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<details class="sql">
+    <summary>Текст SQL-запроса</summary>
+    <pre>{{ sql }}</pre>
+</details>
+{% endblock %}
